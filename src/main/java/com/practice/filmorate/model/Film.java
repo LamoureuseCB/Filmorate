@@ -1,15 +1,14 @@
 package com.practice.filmorate.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class Film {
     private int id;
@@ -17,7 +16,7 @@ public class Film {
     @Size(max = 200)
     private String name;
     private String description;
-    //    анннотация для будущей даты???
+    @PastOrPresent(message = "Дата релиза должна быть не раньше 28 декабря 1895 года")
     private LocalDate releaseDate;
     @Positive(message = "Продолжительность фильма должна быть положительной")
     private int duration;

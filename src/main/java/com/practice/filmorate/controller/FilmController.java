@@ -2,38 +2,46 @@ package com.practice.filmorate.controller;
 
 import com.practice.filmorate.model.Film;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    List<Film> films = new ArrayList<>();
+    Map<Integer, Film> films = new HashMap<>();
+    public static int idCounter = 1;
 
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) {
-        films.add(film);
+    public Film createFilm(@Valid @RequestBody Film film) {
+        if (film.getId() == 0) {
+            throw new ValidationException();
+        }
+        film.setId(idCounter);
+        films.put(idCounter, film);
         log.info("В коллекцию добавлен фильм {}", film.getName());
+        idCounter++;
         return film;
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
+        if (!films.containsKey(film.getId())) {
+            throw new ValidationException("Нет фильма с данным ID");
+        }
+        films.put(film.getId(), film);
         log.info("В коллекции обновлен фильм {}", film.getName());
-        films.remove(film.getName());
-        films.add(film);
         return film;
     }
 
     @GetMapping
-    public List<Film> getAllFilms() {
+    public Map<Integer, Film> getAllFilms() {
         return films;
     }
-
 
 }
