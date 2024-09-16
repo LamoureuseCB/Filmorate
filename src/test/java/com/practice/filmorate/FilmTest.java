@@ -1,6 +1,7 @@
 package com.practice.filmorate;
 
 import jakarta.validation.Validation;
+import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,22 @@ public class FilmTest {
 
         String expected = "Название должно быть не длиннее 200 символов";
         String actual = validateAndGetFirstMessageTemplate(film);
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCreateFailDescription() {
+        Film film = new Film();
+
+        film.setName("Обливион");
+        film.setDescription("");
+        film.setReleaseDate(LocalDate.of(2013, 4, 11));
+        film.setDuration(124);
+
+        String expected = "Описание не может быть пустым";
+        String actual = validateAndGetFirstMessageTemplate(film);
+
 
         Assertions.assertEquals(expected, actual);
     }
@@ -77,6 +94,7 @@ public class FilmTest {
 
         String expected = "Продолжительность фильма должна быть положительной";
         String actual = validateAndGetFirstMessageTemplate(film);
+
 
         Assertions.assertEquals(expected, actual);
     }

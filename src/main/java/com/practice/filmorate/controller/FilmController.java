@@ -6,6 +6,7 @@ import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,18 +15,15 @@ import java.util.Map;
 @RequestMapping("/films")
 public class FilmController {
     Map<Integer, Film> films = new HashMap<>();
-    public static int idCounter = 1;
+    public static int filmIdCounter = 1;
 
 
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
-        if (film.getId() == 0) {
-            throw new ValidationException();
-        }
-        film.setId(idCounter);
-        films.put(idCounter, film);
+        film.setId(filmIdCounter);
+        films.put(filmIdCounter, film);
         log.info("В коллекцию добавлен фильм {}", film.getName());
-        idCounter++;
+        filmIdCounter++;
         return film;
     }
 
@@ -40,8 +38,8 @@ public class FilmController {
     }
 
     @GetMapping
-    public Map<Integer, Film> getAllFilms() {
-        return films;
+    public Collection<Film> getAllFilms() {
+        return films.values();
     }
 
 }

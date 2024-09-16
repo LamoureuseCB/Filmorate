@@ -1,15 +1,25 @@
 package com.practice.filmorate;
 
 import com.practice.filmorate.model.User;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+
+import static jakarta.validation.Validation.buildDefaultValidatorFactory;
+
 public class UserTest {
-    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Validator validator = buildDefaultValidatorFactory().getValidator();
+    @Test
+     void testCreateUser(){
+        User user = new User();
+        String expected = "Добавлен пользователь: " + user.getName();
+        String actual = validateAndGetFirstMessageTemplate(user);
+
+        Assertions.assertEquals(expected, actual);
+    }
 
     @Test
     void testFailEmailEmpty() {
@@ -50,6 +60,8 @@ public class UserTest {
 
         Assertions.assertEquals(expected, actual);
     }
+
+
 
     @Test
     void testCreateFailLoginWithSpaces() {
