@@ -13,43 +13,48 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-
 @RequestMapping("/users")
 public class UserController {
-    Map<Integer, User> users = new HashMap();
-    private static int usersIdCounter = 1;
+    private final Map<Integer, User> users = new HashMap<>();
+    private static int usersIdCounter = 0;
 
-
-    private void validUser(User user) {
+    private void validateUser(User user) {
         LocalDate now = LocalDate.now();
-        if (user.getEmail() == null || user.getEmail().isEmpty() || user.getEmail().isBlank()
-                || !user.getEmail().contains("@")) {
+        if (user.getEmail() == null || user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
             throw new ValidationException("Адрес почты введён неверно");
-        } else if (user.getLogin() == null || user.getLogin().isEmpty() || user.getLogin().isBlank()
-                || user.getLogin().contains(" ")) {
-            throw new ValidationException("Логин не должен быть пустым и содержать пробелы");
-        } else if (user.getDateOfBirth().isAfter(now)) {
-            throw new ValidationException("День рождения не может быть из будущего :)");
         }
-        if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
+        if (user.getLogin() == null || user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+            throw new ValidationException("Логин не должен быть пустым и содержать пробелы");
+        }
+        if (user.getDateOfBirth() == null || user.getDateOfBirth().isAfter(now)) {
+            throw new ValidationException("День рождения не может быть из будущего");
+        }
+        if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
     }
 
     @PostMapping
-    public User createUser(User user) {
-        validUser(user);
+    public User createUser(@RequestBody @Valid User user) {
+        validateUser(user);
+        if (users.containsKey(user.getId())) {
+            throw new ValidationException("Пользователь с данным ID уже существует");
+        }
+
+        user.setId(++usersIdCounter);
+        users.put(user.getId(), user);
+        log.info("Пользователь создан: {}", user);
         return user;
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user) {
+    public User updateUser(@RequestBody @Valid User user) {
+        validateUser(user);
         if (!users.containsKey(user.getId())) {
-            throw new ValidationException("Нет пользователя с данным ID");
+            throw new ValidationException("Пользователя с данным ID не существует");
         }
-        validUser(user);
         users.put(user.getId(), user);
-        log.info("В коллекции обновлен пользователь {}", user.getName());
+        log.info("Пользователь изменён: {}", user);
         return user;
     }
 
@@ -57,6 +62,4 @@ public class UserController {
     public Collection<User> getUsers() {
         return users.values();
     }
-
-
 }

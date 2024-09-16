@@ -3,6 +3,7 @@ package com.practice.filmorate.controller;
 import com.practice.filmorate.model.Film;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@NoArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
     Map<Integer, Film> films = new HashMap<>();
