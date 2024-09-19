@@ -3,29 +3,31 @@ package com.practice.filmorate.controller;
 import com.practice.filmorate.model.Film;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @RestController
-@NoArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
     Map<Integer, Film> films = new HashMap<>();
-    public static int filmIdCounter = 1;
-
+    public static int idCounter = 1;
 
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
-        film.setId(filmIdCounter);
-        films.put(filmIdCounter, film);
+        if(film.getReleaseDate() == null || film.getReleaseDate().isBefore(LocalDate.of(1895, Month.DECEMBER, 28))){
+            throw new ValidationException();
+        }
+        film.setId(idCounter);
+        films.put(idCounter, film);
         log.info("В коллекцию добавлен фильм {}", film.getName());
-        filmIdCounter++;
+        idCounter++;
         return film;
     }
 
