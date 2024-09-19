@@ -16,10 +16,11 @@ public class User {
     @NotBlank(message = "Логин не может быть пустым")
     @Pattern(regexp = "^[^\\s]+$", message = "Логин не может содержать пробелы")
     private String login;
+    @Getter
     @Setter
     private String name;
     @NotNull(message = "Дата рождения не может быть пустой")
-    @Past
+    @PastOrPresent
     private LocalDate dateOfBirth;
 
 
@@ -29,10 +30,6 @@ public class User {
 
     public void setLogin(@NotBlank(message = "Логин не может быть пустым") @Pattern(regexp = "^[^\\s]+$", message = "Логин не может содержать пробелы") String login) {
         this.login = login;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public @NotBlank(message = "Электронная почта не может быть пустой") @Email(message = "Электронная почта должна содержать символ @") String getEmail() {

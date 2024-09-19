@@ -34,20 +34,22 @@ public class UserController {
         }
     }
 
-    @PostMapping
+    @PostMapping()
     public User createUser(@RequestBody @Valid User user) {
         validateUser(user);
+        if (user.getId() != 0) {
+            throw new ValidationException("ID должен начинаться с нуля");
+        }
         if (users.containsKey(user.getId())) {
             throw new ValidationException("Пользователь с данным ID уже существует");
         }
-
         user.setId(++usersIdCounter);
         users.put(user.getId(), user);
         log.info("Пользователь создан: {}", user);
         return user;
     }
 
-    @PutMapping
+    @PutMapping()
     public User updateUser(@RequestBody @Valid User user) {
         validateUser(user);
         if (!users.containsKey(user.getId())) {
