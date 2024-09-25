@@ -4,6 +4,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,5 +24,6 @@ public class User {
     @NotNull(message = "Дата рождения не может быть пустой")
     @PastOrPresent
     private LocalDate birthday;
+    Set<Integer> friends = new HashSet<>();
 
 }

@@ -1,49 +1,45 @@
 package com.practice.filmorate.controller;
 
 import com.practice.filmorate.model.Film;
+import com.practice.filmorate.service.FilmService;
+import com.practice.filmorate.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    Map<Integer, Film> films = new HashMap<>();
-    public static int idCounter = 1;
+    private final FilmService filmService;
+
+
+    @Autowired
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
-        if(film.getReleaseDate() == null || film.getReleaseDate().isBefore(LocalDate.of(1895, Month.DECEMBER, 28))){
-            throw new ValidationException();
-        }
-        film.setId(idCounter);
-        films.put(idCounter, film);
-        log.info("В коллекцию добавлен фильм {}", film.getName());
-        idCounter++;
-        return film;
+        return filmService.getFilmStorage().createFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        if (!films.containsKey(film.getId())) {
-            throw new ValidationException("Нет фильма с данным ID");
-        }
-        films.put(film.getId(), film);
-        log.info("В коллекции обновлен фильм {}", film.getName());
-        return film;
+        return filmService.getFilmStorage().update(film);
     }
 
     @GetMapping
     public Collection<Film> getAllFilms() {
-        return films.values();
+        return filmService.getFilmStorage().getAllFilms();
+    }
+
+    @GetMapping("/{id}")
+    public Film getFilmById(@PathVariable int id) {
+        return filmService.getFilmStorage().getFilmById(id);
     }
 
 }

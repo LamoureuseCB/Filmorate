@@ -1,9 +1,10 @@
 package com.practice.filmorate.controller;
 
 import com.practice.filmorate.model.User;
+import com.practice.filmorate.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -16,32 +17,31 @@ import java.util.Map;
 public class UserController {
     Map<Integer, User> users = new HashMap();
     private static int usersIdCounter = 1;
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        if (user.getName() == null || user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-        }
-        user.setId(usersIdCounter);
-        users.put(usersIdCounter, user);
-        log.info("Добавлен пользователь {}", user.getName());
-        usersIdCounter++;
-        return user;
+        return userService.getUserStorage().createUser(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        if (!users.containsKey(user.getId())) {
-            throw new ValidationException("Пользователя с таким ID не существует");
-        }
-        users.put(user.getId(), user);
-        log.info("Обновлен пользователь {}", user.getId());
-        return user;
+        return userService.getUserStorage().updateUser(user);
     }
 
     @GetMapping
-    public Collection< User> getUsers() {
-        return users.values();
+    public Collection<User> getUsers() {
+        return userService.getUserStorage().getUsers();
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable int id) {
+        return userService.getUserStorage().getUserById(id);
     }
 
 }
