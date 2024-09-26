@@ -36,18 +36,18 @@ public class UserController {
     }
 
     @GetMapping
-    public Collection<User> findAllUsers() {
-        return userService.findAllUsers();
+    public Collection<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable int id) {
-        return getUserById(id);
+        return userService.getUserById(id);
     }
 
     @GetMapping("/{id}/friends")
     public Collection<User> findAllFriends(@PathVariable int id) {
-        return userService.findAllUsers();
+        return userService.getAllUsers();
     }
 
     @PutMapping("/{id}/friends/{friendId}")

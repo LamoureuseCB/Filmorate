@@ -35,32 +35,31 @@ public class UserService {
     }
 
 
-    public Collection<User> findAllUsers() {
+    public Collection<User> getAllUsers() {
         return userStorage.findAllUsers();
     }
 
 
-    private User getUserById(int id) {
+    public User getUserById(int id) {
         return userStorage.findUserById(id)
                 .orElseThrow(() -> new NotFoundException("Нет пользователя с данным ID"));
     }
 
     public void addFriend(int userId, int friendId) {
         User user = getUserById(userId);
-        Set<Integer> friends = user.getFriends();
-        friends.add(friendId);
-        user.setFriends(friends);
+        user.getFriends().add(friendId);
 
+        User friend = getUserById(friendId);
+        friend.getFriends().add(userId);
     }
 
     public void removeFriend(int userId, int friendId) {
         User user = getUserById(userId);
-        Set<Integer> friends = user.getFriends();
-        friends.remove(friendId);
-        user.setFriends(friends);
+        user.getFriends().remove(friendId);
 
+        User friend = getUserById(friendId);
+        friend.getFriends().remove(userId);
     }
-
     public List<User> getAllFriends(int userId) {
         User user = getUserById(userId);
         List<User> friendList = new ArrayList<>();

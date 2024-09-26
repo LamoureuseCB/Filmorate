@@ -1,9 +1,7 @@
 package com.practice.filmorate.storage;
 
-import com.practice.filmorate.exceptions.NotFoundException;
-import com.practice.filmorate.model.Film;
 import com.practice.filmorate.model.User;
-import jakarta.validation.ValidationException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
