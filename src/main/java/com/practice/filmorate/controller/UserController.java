@@ -42,12 +42,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable int id) {
-        return userService.getUserStorage().getUserById(id);
+        return getUserById(id);
     }
 
     @GetMapping("/{id}/friends")
-    public Collection<User> getAllFriends(@PathVariable int id) {
-        return userService.getUserStorage().getUsers();
+    public Collection<User> findAllFriends(@PathVariable int id) {
+        return userService.findAllUsers();
     }
 
     @PutMapping("/{id}/friends/{friendId}")
