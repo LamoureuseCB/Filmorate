@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -42,6 +43,26 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUserById(@PathVariable int id) {
         return userService.getUserStorage().getUserById(id);
+    }
+
+    @GetMapping("/{id}/friends")
+    public Collection<User> getAllFriends(@PathVariable int id) {
+        return userService.getUserStorage().getUsers();
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void removeFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.removeFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.findCommonFriends(id, otherId);
     }
 
 }

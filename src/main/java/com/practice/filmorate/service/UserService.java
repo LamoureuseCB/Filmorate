@@ -18,21 +18,23 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public void addFriend(int userId,int friendId) {
+    public void addFriend(int userId, int friendId) {
         User user = userStorage.getUserById(userId);
         Set<Integer> friends = user.getFriends();
         friends.add(friendId);
         user.setFriends(friends);
 
- }
-    public void removeFriend(int userId,int friendId){
+    }
+
+    public void removeFriend(int userId, int friendId) {
         User user = userStorage.getUserById(userId);
         Set<Integer> friends = user.getFriends();
         friends.remove(friendId);
         user.setFriends(friends);
 
     }
-    public List<User> getAllFriends(int userId){
+
+    public List<User> getAllFriends(int userId) {
         User user = userStorage.getUserById(userId);
         List<User> friendList = new ArrayList<>();
         Set<Integer> friends = user.getFriends();
@@ -42,9 +44,15 @@ public class UserService {
         return friendList;
     }
 
+    public List<User> findCommonFriends(int userId, int otherId) {
+        Set<Integer> userFriendsId = userStorage.getUserById(userId).getFriends();
+        Set<Integer> otherIdFriendsId = userStorage.getUserById(otherId).getFriends();
+        List<User> commonFriends = new ArrayList<>();
+        for (Integer friend : userFriendsId) {
+            if (otherIdFriendsId.contains(friend)) {
+                commonFriends.add(userStorage.getUserById(friend));
+            }
+        }
+        return commonFriends;
+    }
 }
-//Создайте UserService, который будет отвечать за такие операции с пользователями, как добавление в друзья, удаление из друзей, вывод списка общих друзей. Пока пользователям не надо одобрять заявки в друзья — добавляем сразу. То есть если Лена стала другом Саши, то это значит, что Саша теперь друг Лены.
-//Подсказка: про список друзей и лайки
-//Есть много способов хранить информацию о том, что два пользователя являются друзьями. Например,
-// можно создать свойство friends в классе пользователя, которое будет содержать список его друзей.
-// Вы можете использовать такое решение или придумать своё. Для того чтобы обеспечить уникальность значения (мы не можем добавить одного человека в друзья дважды), проще всего использовать для хранения Set<Long> c id друзей. Таким же образом можно обеспечить условие «один пользователь — один лайк» для оценки фильмов.

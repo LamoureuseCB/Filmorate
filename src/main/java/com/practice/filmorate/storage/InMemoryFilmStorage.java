@@ -17,7 +17,7 @@ import java.util.Map;
 public class InMemoryFilmStorage implements FilmStorage {
     Map<Integer, Film> films = new HashMap<>();
     public static int idCounter = 1;
-    private static final String FILM_ID_EXC = "Фильм по ID не найден";
+    private static final String FILM_ID_EXСEPTION = "Фильм по ID не найден";
 
 
     @Override
@@ -52,8 +52,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         if(films.containsKey(id)) {
             return films.get(id);
         }
-        else{
-            throw new NotFoundException(FILM_ID_EXC);
+        else {
+            throw new NotFoundException(FILM_ID_EXСEPTION);
         }
     }
 }

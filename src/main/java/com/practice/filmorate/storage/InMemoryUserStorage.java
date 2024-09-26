@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 @Slf4j
 @Component
 public class InMemoryUserStorage implements UserStorage {
@@ -49,15 +50,9 @@ public class InMemoryUserStorage implements UserStorage {
     public User getUserById(int id) {
         if(users.containsKey(id)) {
             return users.get(id);
-        }
-        else{
+        } else {
             throw new NotFoundException(USER_ID_MESSAGE);
         }
     }
-
-
-
 }
-//имплементирующие новые интерфейсы, и перенесите туда всю логику хранения,
-// обновления и поиска объектов.
-//Добавьте к InMemoryFilmStorage и InMemoryUserStorage аннотацию @Component, чтобы впоследствии пользоваться внедрением зависимостей и передавать хранилища сервисам
+

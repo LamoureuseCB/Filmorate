@@ -2,7 +2,6 @@ package com.practice.filmorate.controller;
 
 import com.practice.filmorate.model.Film;
 import com.practice.filmorate.service.FilmService;
-import com.practice.filmorate.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final FilmService filmService;
 
+    private final FilmService filmService;
 
     @Autowired
     public FilmController(FilmService filmService) {
@@ -42,4 +41,18 @@ public class FilmController {
         return filmService.getFilmStorage().getFilmById(id);
     }
 
+    @PutMapping("/{id}/like/{userId}")
+    public Film addLike(@PathVariable int id, @PathVariable int userId) {
+        return filmService.addLike(id, userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void deleteFilm(@PathVariable int id, @PathVariable int userId) {
+
+    }
+
+    @GetMapping("/popular?count={count}")
+    public Collection<Film> getPopularFilms(@PathVariable int count) {
+        return filmService.getTenPopularFilms();
+    }
 }

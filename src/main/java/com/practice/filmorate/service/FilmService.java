@@ -1,5 +1,6 @@
 package com.practice.filmorate.service;
 
+import com.practice.filmorate.exceptions.NotFoundException;
 import com.practice.filmorate.model.Film;
 import com.practice.filmorate.storage.FilmStorage;
 import lombok.Getter;
@@ -16,12 +17,13 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    public void addLike(int filmId, int userId) {
+    public Film addLike(int filmId, int userId) {
         Film film = filmStorage.getFilmById(filmId);
         Set<Integer> likes = film.getLikes();
         likes.add(userId);
         film.setLikes(likes);
 
+        return film;
     }
 
     public void removeLike(int filmId, int userId) {
@@ -30,15 +32,16 @@ public class FilmService {
         if (likes.contains(userId)) {
             likes.remove(userId);
             film.setLikes(likes);
+        } else {
+            throw new NotFoundException("Лайк от пользователя не найден");
         }
     }
-    public List<Film> getTenPopularFilms(){
-        Collection<Film> allFilms= filmStorage.getAllFilms();
-        List<Film> tenPopularFilms = new ArrayList<>();
-//        Comparator<Film> ????
-        return tenPopularFilms;
+
+    public Collection<Film> getTenPopularFilms() {
+        Collection<Film> allFilms = filmStorage.getAllFilms();
+        return allFilms.stream()
+                .sorted(Comparator.comparing(film -> film.getLikes().size()).reversed())
+                .limit(10)
+                .toList();
     }
 }
-//Создайте FilmService, который будет отвечать
-// за операции с фильмами, — добавление и удаление лайка,
-// вывод 10 наиболее популярных фильмов по количеству лайков. Пусть пока каждый пользователь может поставить лайк фильму только один раз.
