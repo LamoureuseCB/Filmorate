@@ -27,17 +27,17 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        return userService.getUserStorage().createUser(user);
+        return userService.createUser(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        return userService.getUserStorage().updateUser(user);
+        return userService.updateUser(user);
     }
 
     @GetMapping
-    public Collection<User> getUsers() {
-        return userService.getUserStorage().getUsers();
+    public Collection<User> findAllUsers() {
+        return userService.findAllUsers();
     }
 
     @GetMapping("/{id}")

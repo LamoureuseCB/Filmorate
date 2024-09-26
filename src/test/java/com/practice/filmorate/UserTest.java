@@ -24,7 +24,7 @@ public class UserTest {
         user.setName("Kate");
         user.setEmail("kate@gmail.com");
         user.setLogin("kate");
-        user.setDateOfBirth(LocalDate.of(1970, Month.JANUARY, 1));
+        user.setBirthday(LocalDate.of(1970, Month.JANUARY, 1));
 
     }
 
@@ -71,7 +71,7 @@ public class UserTest {
 
     @Test
     void testFailBirthday() {
-        user.setDateOfBirth(LocalDate.of(1970, Month.JANUARY, 1));
+        user.setBirthday(LocalDate.of(1970, Month.JANUARY, 1));
 
         String expected = "Дата рождения не может быть пустой";
         String actual = validateAndGetFirstMessageTemplate(user);
@@ -91,7 +91,7 @@ public class UserTest {
 
     @Test
     void testFailBirthdayFuture() {
-        user.setDateOfBirth(LocalDate.of(2500, 1, 6));
+        user.setBirthday(LocalDate.of(2500, 1, 6));
 
         String expected = "Дата рождения должна быть не позднее текущей даты";
         String actual = validateAndGetFirstMessageTemplate(user);
