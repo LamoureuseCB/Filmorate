@@ -16,8 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    Map<Integer, User> users = new HashMap();
-    private static int usersIdCounter = 1;
+
     private final UserService userService;
 
     @Autowired
