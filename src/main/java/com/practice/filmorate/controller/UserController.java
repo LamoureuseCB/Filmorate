@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping("/{id}/friends")
     public Collection<User> findAllFriends(@PathVariable int id) {
-        return userService.getAllUsers();
+        return userService.getAllFriends(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
