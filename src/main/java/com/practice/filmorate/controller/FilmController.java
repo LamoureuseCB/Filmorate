@@ -1,5 +1,6 @@
 package com.practice.filmorate.controller;
 
+import com.practice.filmorate.dao.FilmDao;
 import com.practice.filmorate.model.Film;
 import com.practice.filmorate.service.FilmService;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
+    private final FilmDao filmDao;
 
     private final FilmService filmService;
 

@@ -1,7 +1,6 @@
 package com.practice.filmorate;
 
 import jakarta.validation.Validation;
-import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ public class FilmTest {
 
     @Test
     void testCreateFailName() {
-        Film film = new Film();
+        Film film = new Film(id, title, description, releaseYear, duration, ratingMpa);
         film.setDescription("Научно-фантастический боевик");
         film.setReleaseDate(LocalDate.of(2013, 4, 11));
         film.setDuration(124);
@@ -27,7 +26,7 @@ public class FilmTest {
 
     @Test
     void testCreateFailLongName() {
-        Film film = new Film();
+        Film film = new Film(id, title, description, releaseYear, duration, ratingMpa);
         String longName = "События фантастического фильма Обливион разворачиваются в далеком будущем, где наша планета Земля подверглась вторжению.События фантастического фильма Обливион разворачиваются в далеком будущем, где наша планета Земля подверглась вторжению";
         film.setName(longName);
         film.setDescription("Научно-фантастический боевик");
@@ -42,7 +41,7 @@ public class FilmTest {
 
     @Test
     void testCreateFailDescription() {
-        Film film = new Film();
+        Film film = new Film(id, title, description, releaseYear, duration, ratingMpa);
 
         film.setName("Обливион");
         film.setDescription("");
@@ -58,7 +57,7 @@ public class FilmTest {
 
     @Test
     void testCreateFailReleaseDate() {
-        Film film = new Film();
+        Film film = new Film(id, title, description, releaseYear, duration, ratingMpa);
         film.setName("Обливион");
         film.setDescription("Научно-фантастический боевик");
         film.setReleaseDate(LocalDate.of(3013, 4, 11));
@@ -72,7 +71,7 @@ public class FilmTest {
 
     @Test
     void testFailDuration() {
-        Film film = new Film();
+        Film film = new Film(id, title, description, releaseYear, duration, ratingMpa);
         film.setName("Обливион");
         film.setDescription("Научно-фантастический боевик");
         film.setReleaseDate(LocalDate.of(2013, 4, 11));
@@ -86,7 +85,7 @@ public class FilmTest {
 
     @Test
     void testFailNegativeDuration() {
-        Film film = new Film();
+        Film film = new Film(id, title, description, releaseYear, duration, ratingMpa);
         film.setName("Обливион");
         film.setDescription("Научно-фантастический боевик");
         film.setReleaseDate(LocalDate.of(2013, 4, 11));

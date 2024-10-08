@@ -20,7 +20,7 @@ public class UserTest {
 
     @BeforeEach
     void createdUser() {
-        user = new User();
+        user = new User(id, name, eMail, login, birthday);
         user.setName("Kate");
         user.setEmail("kate@gmail.com");
         user.setLogin("kate");
