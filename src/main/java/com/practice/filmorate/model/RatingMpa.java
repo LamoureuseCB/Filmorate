@@ -1,10 +1,11 @@
 package com.practice.filmorate.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RatingMpa {
     private int id;
     private String name;

@@ -9,7 +9,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class Film {
     private int id;
@@ -20,8 +21,8 @@ public class Film {
     private LocalDate releaseDate;
     @Positive(message = "Продолжительность фильма должна быть положительной")
     private int duration;
-    private Set<String> genres = new HashSet<>();
-    @NotBlank(message = "Рейтинг не может быть пустым")
-    private String mpaRating;
-    private Set<Integer> likes = new HashSet<>();
+    private final Set<Genre> genres = new HashSet<>();
+    @NotNull
+    private  RatingMpa mpa;
+    private final Set<Integer> likes = new HashSet<>();
 }

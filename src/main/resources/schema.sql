@@ -38,9 +38,9 @@ create table if not exists genres
 create table if not exists films
 (
     id            serial primary key,
-    title         varchar(255) not null,
+    name         varchar(255) not null,
     description   varchar(500),
-    release_year  date,
+    release_date  date,
     duration      int,
     rating_mpa_id int references mpa_ratings (id) on delete cascade
 );

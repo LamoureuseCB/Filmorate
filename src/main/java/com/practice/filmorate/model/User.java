@@ -10,6 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     private int id;
     @NotBlank(message = "Электронная почта не может быть пустой")
@@ -18,12 +19,10 @@ public class User {
     @NotBlank(message = "Логин не может быть пустым")
     @Pattern(regexp = "^[^\\s]+$", message = "Логин не может содержать пробелы")
     private String login;
-    @Getter
-    @Setter
     private String name;
     @NotNull(message = "Дата рождения не может быть пустой")
     @PastOrPresent
     private LocalDate birthday;
-    private Set<Integer> friends = new HashSet<>();
-    private Set<Friendship> friendshipStatus = new HashSet<>();
+    private final Set<Integer> friends = new HashSet<>();
+    private final Set<Friendship> friendshipStatus = new HashSet<>();
 }

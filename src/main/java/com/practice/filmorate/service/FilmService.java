@@ -25,7 +25,7 @@ public class FilmService {
         if (film.getReleaseDate() == null || film.getReleaseDate().isBefore(LocalDate.of(1895, Month.DECEMBER, 28))) {
             throw new ValidationException("Дата не должна быть ранее 28 декабря 1895");
         }
-        return filmStorage.createFilm(film);
+        return filmStorage.create(film);
     }
 
     public Film update(Film film) {
