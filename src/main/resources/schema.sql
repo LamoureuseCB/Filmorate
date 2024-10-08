@@ -9,7 +9,7 @@ drop table if exists genres cascade;
 
 create table if not exists users
 (
-    id       serial4 primary key,
+    id       serial primary key,
     name     varchar(255) not null unique,
     email    varchar(255) not null,
     login    varchar(255) not null unique,
@@ -25,23 +25,23 @@ create table if not exists friends
 
 create table if not exists mpa_ratings
 (
-    id          serial4 primary key,
-    mpa_name    varchar(15)  not null,
+    id          serial primary key,
+    name    varchar(15)  not null unique ,
     description varchar(100) not null
 
 );
 create table if not exists genres
 (
-    id   serial4 primary key,
+    id   serial primary key,
    name varchar(144) not null
 );
 create table if not exists films
 (
-    id            serial4 primary key,
+    id            serial primary key,
     title         varchar(255) not null,
     description   varchar(500),
     release_year  date,
-    duration      serial4,
+    duration      int,
     rating_mpa_id int references mpa_ratings (id) on delete cascade
 );
 
