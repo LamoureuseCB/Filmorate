@@ -3,9 +3,11 @@ package com.practice.filmorate.service;
 import com.practice.filmorate.exceptions.NotFoundException;
 
 import com.practice.filmorate.model.User;
+import com.practice.filmorate.storage.FriendsStorage;
 import com.practice.filmorate.storage.UserStorage;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,23 +17,25 @@ import java.util.Set;
 
 @Service
 @Getter
+
 public class UserService {
     private final UserStorage userStorage;
 
-    public UserService(UserStorage userStorage) {
+
+    public UserService(UserStorage userStorage, FriendsStorage friendsStorage) {
         this.userStorage = userStorage;
     }
 
-    public User createUser(User user) {
+    public User create(User user) {
         if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
-        return userStorage.createUser(user);
+        return userStorage.create(user);
     }
 
-    public User updateUser(User user) {
+    public User update(User user) {
         getUserById(user.getId());
-        return userStorage.updateUser(user);
+        return userStorage.update(user);
     }
 
 

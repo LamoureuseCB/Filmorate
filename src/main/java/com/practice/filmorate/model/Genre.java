@@ -4,8 +4,9 @@ import lombok.*;
 
 import java.util.Objects;
 
-@Data
-@RequiredArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class Genre {
     private int id;
     private String name;
