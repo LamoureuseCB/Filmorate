@@ -3,8 +3,7 @@ drop table if exists films cascade;
 drop table if exists mpa_ratings cascade;
 drop table if exists friends cascade;
 drop table if exists likes cascade;
-drop table if exists movies cascade;
-drop table if exists movie_genres cascade;
+drop table if exists films_genres cascade;
 drop table if exists genres cascade;
 
 create table if not exists users
@@ -19,7 +18,7 @@ create table if not exists friends
 (
     first_user_id     int references users (id) on delete cascade,
     second_user_id    int references users (id) on delete cascade,
-    friendship_status varchar(20) check ( friendship_status in ('дружба подтверждена', 'дружба не подтверждена')),
+--     friendship_status varchar(20) check ( friendship_status in ('дружба подтверждена', 'дружба не подтверждена')),
     primary key (first_user_id, second_user_id)
 );
 

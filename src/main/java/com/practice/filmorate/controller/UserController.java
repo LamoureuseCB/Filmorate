@@ -2,16 +2,12 @@ package com.practice.filmorate.controller;
 
 import com.practice.filmorate.model.User;
 import com.practice.filmorate.service.UserService;
-import com.practice.filmorate.storage.FriendsStorage;
-import com.practice.filmorate.storage.UserStorage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-
 import java.util.List;
 
 
@@ -22,7 +18,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final FriendsStorage friendsStorage;
 
 
     @PostMapping
@@ -47,22 +42,33 @@ public class UserController {
 
     @GetMapping("/{id}/friends")
     public Collection<User> findAllFriends(@PathVariable int id) {
-        return friendsStorage.findAllFriends(id);
+        log.info("GET / {} / friends", id);
+        return userService.findAllFriends(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable int id, @PathVariable int friendId) {
-        friendsStorage.addFriend(id, friendId);
+        log.info("PUT / {} / friends / {}", id, friendId);
+        userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void removeFriend(@PathVariable int id, @PathVariable int friendId) {
-        friendsStorage.removeFriend(id, friendId);
+        log.info("DELETE / {} / friends / {}", id, friendId);
+        userService.removeFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
-        return friendsStorage.findCommonFriends(id, otherId);
+    public Collection<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        log.info("GET / {} / friends / common / {}", id, otherId);
+        return userService.getCommonFriends(id, otherId);
     }
 
 }
+
+
+
+
+
+
+

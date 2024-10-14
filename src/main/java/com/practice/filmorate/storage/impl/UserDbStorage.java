@@ -2,30 +2,21 @@ package com.practice.filmorate.storage.impl;
 
 import com.practice.filmorate.exceptions.NotFoundException;
 import com.practice.filmorate.model.User;
+import com.practice.filmorate.storage.mappers.UserMapper;
 import com.practice.filmorate.storage.UserStorage;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Collection;
-
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @Component
 @RequiredArgsConstructor
-@Qualifier("userDbStorage")
+
 public class UserDbStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
 
@@ -47,8 +38,8 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User update(User user) {
-        String updateQuery= "update users set email = ?, login = ?, name = ?, birthday = ? WHERE id = ?";
-        int updated = jdbcTemplate.update(updateQuery,user.getEmail(),user.getLogin(),user.getName(), user.getBirthday(), user.getId());
+        String updateQuery = "update users set email = ?, login = ?, name = ?, birthday = ? WHERE id = ?";
+        int updated = jdbcTemplate.update(updateQuery, user.getEmail(), user.getLogin(), user.getName(), user.getBirthday(), user.getId());
         if (updated == 0) {
             throw new NotFoundException("Пользователь с ID " + user.getId() + " не найден");
         }
@@ -58,31 +49,18 @@ public class UserDbStorage implements UserStorage {
 
 
     @Override
-    public Collection<User> findAllUsers() {
+    public List<User> getAllUsers() {
         String allUsersQuery = "select * from users";
-        return jdbcTemplate.query(allUsersQuery, this::mapRow);
+        return jdbcTemplate.query(allUsersQuery, new UserMapper());
     }
 
     @Override
     public Optional<User> findUserById(int id) {
         String byIdQuery = "select * from users where id = ?";
-        try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(byIdQuery, this::mapRow, id));
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
-    }
-
-    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
-        String name = rs.getString("name");
-        String eMail = rs.getString("email");
-        String login = rs.getString("login");
-        LocalDate birthday = rs.getDate("birthday").toLocalDate();
-        return new User(id, name, eMail, login, birthday);
-
+        return jdbcTemplate.queryForStream(byIdQuery, new UserMapper(), id).findFirst();
     }
 
 }
+
 
 
