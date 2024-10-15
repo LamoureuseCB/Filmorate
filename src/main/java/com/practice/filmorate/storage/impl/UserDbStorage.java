@@ -57,7 +57,7 @@ public class UserDbStorage implements UserStorage {
     @Override
     public Optional<User> findUserById(int id) {
         String byIdQuery = "select * from users where id = ?";
-        return jdbcTemplate.queryForStream(byIdQuery, new UserMapper(), id).findFirst();
+        return jdbcTemplate.query(byIdQuery, new UserMapper(), id).stream().findFirst();
     }
 
 }

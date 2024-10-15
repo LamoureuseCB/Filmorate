@@ -7,6 +7,7 @@ import com.practice.filmorate.model.Film;
 import com.practice.filmorate.model.Genre;
 
 import com.practice.filmorate.storage.FilmStorage;
+import com.practice.filmorate.storage.GenreStorage;
 import com.practice.filmorate.storage.MpaStorage;
 import com.practice.filmorate.storage.mappers.FilmMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,13 @@ public class FilmDbStorage implements FilmStorage {
                     films.duration,
                     mpa_ratings.id as mpaId,
                     mpa_ratings.name as mpaName,
-                    mpa_ratings.description as mpaDesc,
-                    count(likes.film_id) as likeCount
+                    mpa_ratings.description as mpaDesc
+                
              from films
                  join mpa_ratings on films.rating_mpa_id = mpa_ratings.id
             """;
     private final MpaStorage mpaStorage;
+    private final GenreStorage genreStorage;
 
 
     @Override
@@ -82,22 +84,23 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Collection<Film> findAll() {
-        return jdbcTemplate.query(select, new FilmMapper());
+        String sql = select + " order by films.id";
+        return jdbcTemplate.query(sql, new FilmMapper(genreStorage));
     }
 
     @Override
     public Optional<Film> findById(int id) {
         String filmByIdQuery = select + " where films.id = ?";
-        return jdbcTemplate.queryForStream(filmByIdQuery, new FilmMapper(), id).findFirst();
+        return jdbcTemplate.query(filmByIdQuery, new FilmMapper(genreStorage), id).stream().findFirst();
     }
 
     @Override
     public List<Film> getTenPopularFilms(int count) {
-        String sql = "left join likes on films.id = likes.film_id" +
-                "group by films.id, mpa_ratings.id" +
-                "order by like_count desc" +
-                "limit ?";
-        return jdbcTemplate.query(select + sql, new FilmMapper(), count);
+        String sql = " left join likes on films.id = likes.film_id " +
+                " group by films.id, mpa_ratings.id " +
+                " order by  count(likes.film_id) desc " +
+                " limit ? ";
+        return jdbcTemplate.query(select + sql, new FilmMapper(genreStorage), count);
     }
 
     private void updateGenre(Film film) {

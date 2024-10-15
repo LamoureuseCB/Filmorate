@@ -33,7 +33,14 @@ public class GenreDbStorage implements GenreStorage {
     public Optional<Genre> findGenreById ( int genreId){
         String genresQuery = "select * from genres where id = ?";
 
-        return jdbcTemplate.queryForStream(genresQuery, new GenreMapper(), genreId).findFirst();
+        return jdbcTemplate.query(genresQuery, new GenreMapper(), genreId).stream().findFirst();
     }
 
+
+    @Override
+    public List<Genre> findAllByFilmId(int filmId) {
+        String sql = "select genres.id, genres.name from genres join films_genres on genres.id = films_genres.genre_id where films_genres.film_id = ? ";
+        return jdbcTemplate.query(sql,new GenreMapper(),filmId);
+
+    }
 }

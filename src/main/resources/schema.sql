@@ -32,7 +32,7 @@ create table if not exists mpa_ratings
 create table if not exists genres
 (
     id   serial primary key,
-   name varchar(144) not null
+    name varchar(144) not null
 );
 create table if not exists films
 (
@@ -58,4 +58,3 @@ create table if not exists likes
     film_id int references films (id) on delete cascade,
     primary key (user_id, film_id)
 );
-

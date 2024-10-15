@@ -10,5 +10,6 @@ import java.util.Set;
 public interface GenreStorage {
     Optional<Genre> findGenreById(int genreId);
     Set<Genre> findAll();
+    List<Genre> findAllByFilmId(int filmId);
 }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -21,7 +22,7 @@ public class MpaController {
     private final FilmService filmService;
 
     @GetMapping
-    public Set<Mpa> findAllMpa() {
+    public List<Mpa> findAllMpa() {
         log.info("GET / mpa");
         return filmService.findAllMpa();
     }

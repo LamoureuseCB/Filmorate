@@ -98,7 +98,7 @@ public class FilmService {
         return filmStorage.findById(id).orElseThrow(() -> new NotFoundException("Нет фильма с данным ID"));
     }
 
-    public Set<Mpa> findAllMpa() {
+    public List<Mpa> findAllMpa() {
         return mpaStorage.getAllMpa();
     }
 
